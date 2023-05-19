@@ -1,13 +1,32 @@
 import React, { useState } from 'react'; //import React Component
-
 import _ from 'lodash'; //import external library!
 
 export default function GameDataTable(props) {
 
   //Your work goes here
+  const [sortByCriteria, setSortByCriteria] = useState(null);
+  const [isAscending, setIsAscending] = useState(null);
+
+  const handleClick = (event) => {
+    const clickedButton = event.currentTarget.name;
+
+    if (clickedButton !== sortByCriteria) {
+      setSortByCriteria(clickedButton);
+      setIsAscending(true);
+    } else if (isAscending) {
+      setIsAscending(false);
+    } else {
+      setSortByCriteria(null);
+      setIsAscending(null);
+    }
+  };
 
   //convert data into rows
-  const rows = props.data.map((match) => {
+  let sortedData = _.sortBy(props.data, sortByCriteria);
+  if (sortByCriteria && !isAscending) {
+    sortedData = _.reverse(sortedData);
+  }
+  const rows = sortedData.map((match) => {
     return <GameDataRow key={match.year} game={match} />
   });
 
@@ -18,19 +37,19 @@ export default function GameDataTable(props) {
           <tr>
             <th>
               Year
-              <SortButton name="year" />
+              <SortButton name="year" active={sortByCriteria === "year"} ascending={isAscending && sortByCriteria === 'year'} onClick={handleClick} />
             </th>
             <th className="text-end">
               Winner
-              <SortButton name="winner" />
+              <SortButton name="winner" active={sortByCriteria === "winner"} ascending={isAscending && sortByCriteria === 'winner'} onClick={handleClick} />
             </th>
             <th className="text-center">
               Score
-              <SortButton name="score" />
+              <SortButton name="score" active={sortByCriteria === "score"} ascending={isAscending && sortByCriteria === 'score'} onClick={handleClick} />
             </th>
             <th>
               Runner-Up
-              <SortButton name="runner_up" />
+              <SortButton name="runner_up" active={sortByCriteria === "runner_up"} ascending={isAscending && sortByCriteria === 'runner_up'} onClick={handleClick} />
             </th>
           </tr>
         </thead>
@@ -43,7 +62,7 @@ export default function GameDataTable(props) {
 }
 
 //Component for managing display logic of sort button
-//Props: 
+//Props:
 //  `active` [boolean] if icon should be highlighted,
 //  `ascending` [boolean] if icon should be in ascending order (flipped)
 //  `onClick` [function] click handler (passthrough)
