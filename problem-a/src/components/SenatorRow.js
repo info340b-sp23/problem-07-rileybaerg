@@ -11,12 +11,8 @@ export function SenatorRow({ senatorData }) {
     <tr>
       <td>{name}</td>
       <td>{`${party.charAt(0)} - ${state}`}</td>
-      <td>
-        <a href={`tel:${phone}`}>{phone}</a>
-      </td>
-      <td>
-        <a href={`https://twitter.com/${twitter}`}>@{twitter}</a>
-      </td>
+      <td><a href={`tel:${phone}`}>{phone}</a></td>
+      <td><a href={`https://twitter.com/${twitter}`}>@{twitter}</a></td>
     </tr>
   );
 }
