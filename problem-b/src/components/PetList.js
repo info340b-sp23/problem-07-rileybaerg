@@ -16,8 +16,6 @@ function PetCard({ petData, onAdopt }) {
   );
 }
 
-
-
 function PetList({ pets, onAdopt }) {
   return (
     <>
